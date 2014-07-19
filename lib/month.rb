@@ -1,5 +1,9 @@
 class Month
+  require 'zellers_congruence'
+
   MONTHS = [nil, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  DAYS_IN_WEEK = 7
+
   def initialize(month, year)
     err_msg = "Invalid arguments.  Usage: cal [month] year"
     raise ArgumentError, err_msg if month < 1 || month > 12
@@ -17,19 +21,40 @@ class Month
     MONTHS[@month]
   end
 
+  def make_days_array
+    first_week_day = ZellersCongruence.calculate(@month,1,@year)
+    first_week_day = (first_week_day + 6) % 7 # makes Sunday the zeroth index
+    output = ""
+    index = first_week_day
+    count = 1
+    first_week_day.times { output << "   " }
+    @num_month_days.times do
+      (index+1) % DAYS_IN_WEEK == 0 ? output << "#{count.to_s.rjust(2)}\n" : output << "#{count.to_s.rjust(2)} "
+      index += 1
+      count += 1
+    end
+    output = output.rstrip
+    num_extra_newlines = 6 - (output.size/20).ceil
+    num_extra_newlines.times do
+      output << "\n"
+    end
+    output
+  end
+
   def to_s
-    days = Array(1..month_days)
-    puts days
+    make_days_array
     output = header
     output << "\nSu Mo Tu We Th Fr Sa\n"
+    output << make_days_array
+    output
   end
 
   def leap_year?
     if @year % 4 == 0
       return true unless @year % 100 == 0
       return true if @year % 400 == 0
-      return false
     end
+    return false
   end
 
   def month_days
