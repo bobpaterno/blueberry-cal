@@ -11,6 +11,7 @@ class Month
     @month = month
     @year = year
     @num_month_days = month_days
+    @first_week_day = nil
   end
 
   def header
@@ -22,12 +23,12 @@ class Month
   end
 
   def make_days_array
-    first_week_day = ZellersCongruence.calculate(@month,1,@year)
-    first_week_day = (first_week_day + 6) % 7 # makes Sunday the zeroth index
+    @first_week_day = ZellersCongruence.calculate(@month,1,@year)
+    @first_week_day = (@first_week_day + 6) % 7 # makes Sunday the zeroth index
     output = ""
-    index = first_week_day
+    index = @first_week_day
     count = 1
-    first_week_day.times { output << "   " }
+    @first_week_day.times { output << "   " }
     @num_month_days.times do
       (index+1) % DAYS_IN_WEEK == 0 ? output << "#{count.to_s.rjust(2)}\n" : output << "#{count.to_s.rjust(2)} "
       index += 1
@@ -39,6 +40,28 @@ class Month
       output << "\n"
     end
     output
+  end
+
+  def make_week(start_date, start_index, max_date)
+    week = []
+    start_index.times do
+      week.unshift("  ")
+    end
+    (DAYS_IN_WEEK - start_index).times do
+      week << start_date.to_s.rjust(2) unless start_date > max_date
+      start_date += 1
+    end
+    week << "\n"
+  end
+
+  def create_month_array(week_num)
+    @days_array = Array.new(6) { Array.new(8) }
+    @first_week_day = ZellersCongruence.calculate(@month,1,@year)
+    @first_week_day = (@first_week_day +6) % 7  # makes Sunday the zeroth index
+
+    if week_num == 0
+      @days_array[week_num].collect! { |day| day = "   " }
+    end
   end
 
   def to_s
