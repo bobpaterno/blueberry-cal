@@ -11,7 +11,8 @@ class Month
     @month = month
     @year = year
     @num_month_days = month_days
-    @first_week_day = nil
+    @first_week_day = ZellersCongruence.calculate(@month,1,@year)
+    @first_week_day = (@first_week_day + 6) % 7 # makes Sunday the zeroth index
   end
 
   def header
@@ -52,6 +53,19 @@ class Month
       start_date += 1
     end
     week << "\n"
+  end
+
+  def make_month
+    day_date = 1
+    start_index = @first_week_day
+    puts "Start index is #{start_index}"
+    month = []
+    6.times do
+      month << make_week(day_date, start_index)
+      day_date += 7
+      start_index = 0
+    end
+    month
   end
 
   def create_month_array(week_num)
