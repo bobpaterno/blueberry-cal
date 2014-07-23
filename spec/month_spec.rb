@@ -236,7 +236,9 @@ RSpec.describe Month do
                   ["\n"]]
       month.make_month.should == expected
     end
+  end
 
+  context "to_s method" do
     it "prints out the month March 2015" do
       month = Month.new(3,2015)
       expected = "     March 2015\nSu Mo Tu We Th Fr Sa\n 1  2  3  4  5  6  7\n 8  9 10 11 12 13 14\n15 16 17 18 19 20 21\n22 23 24 25 26 27 28\n29 30 31\n\n"
