@@ -42,13 +42,13 @@ class Month
     output
   end
 
-  def make_week(start_date, start_index, max_date)
+  def make_week(start_date, start_index)
     week = []
     start_index.times do
       week.unshift("  ")
     end
     (DAYS_IN_WEEK - start_index).times do
-      week << start_date.to_s.rjust(2) unless start_date > max_date
+      week << start_date.to_s.rjust(2) unless start_date > @num_month_days
       start_date += 1
     end
     week << "\n"

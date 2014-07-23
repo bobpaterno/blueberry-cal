@@ -134,53 +134,56 @@ RSpec.describe Month do
     it "outputs a week array [1,2,3,4,5,6,7,\\n]" do
       month = Month.new(3,2015)
       expected = [" 1", " 2", " 3", " 4", " 5", " 6", " 7", "\n"]
-      month.make_week(1,0,31).should == expected
+      month.make_week(1,0).should == expected
     end
     it "outputs a week array ["  ",1,2,3,4,5,6,\\n]" do
       month = Month.new(9,2014)
       expected = ["  ", " 1", " 2", " 3", " 4", " 5", " 6", "\n"]
-      month.make_week(1,1,30).should == expected
+      month.make_week(1,1).should == expected
     end
     it "outputs a week array ["  ","  ",1,2,3,4,5,\\n]" do
       month = Month.new(7,2014)
       expected = ["  ", "  ", " 1", " 2", " 3", " 4", " 5", "\n"]
-      month.make_week(1,2,30).should == expected
+      month.make_week(1,2).should == expected
     end
     it "outputs a week array ["  ","  ","  ","  ","  ","  ",1,\\n]" do
       month = Month.new(11,2014)
       expected = ["  ", "  ", "  ", "  ", "  ", "  ", " 1", "\n"]
-      month.make_week(1,6,30).should == expected
+      month.make_week(1,6).should == expected
     end
     it "outputs a week array [2,3,4,5,6,7,8,\\n]" do
       month = Month.new(3,2014)
       expected = [" 2", " 3", " 4", " 5", " 6", " 7"," 8", "\n"]
-      month.make_week(2,0,31).should == expected
+      month.make_week(2,0).should == expected
     end
     it "outputs a week array [8,9,10,11,12,13,14,\\n]" do
       month = Month.new(3,2014)
       expected = [" 8", " 9", "10", "11", "12", "13","14", "\n"]
-      month.make_week(8,0,31).should == expected
+      month.make_week(8,0).should == expected
     end
     it "outputs a week array [25,26,27,28,29,30,31,\\n]" do
       month = Month.new(3,2014)
       expected = ["25", "26", "27", "28", "29", "30","31", "\n"]
-      month.make_week(25,0,31).should == expected
+      month.make_week(25,0).should == expected
     end
     it "outputs a week array [25,26,27,28,29,30,\\n]" do
-      month = Month.new(3,2014)
+      month = Month.new(4,2014)
       expected = ["25", "26", "27", "28", "29", "30", "\n"]
-      month.make_week(25,0,30).should == expected
+      month.make_week(25,0).should == expected
     end
     it "outputs a week array [31,\\n]" do
       month = Month.new(3,2014)
       expected = ["31", "\n"]
-      month.make_week(31,0,31).should == expected
+      month.make_week(31,0).should == expected
     end
     it "outputs a week array [\\n]" do
       month = Month.new(3,2014)
       expected = ["\n"]
-      month.make_week(32,0,31).should == expected
+      month.make_week(32,0).should == expected
     end
+  end
+
+  context ".week_format" do
     it "prints out the month March 2015" do
       month = Month.new(3,2015)
       expected = "     March 2015\nSu Mo Tu We Th Fr Sa\n 1  2  3  4  5  6  7\n 8  9 10 11 12 13 14\n15 16 17 18 19 20 21\n22 23 24 25 26 27 28\n29 30 31\n\n"
