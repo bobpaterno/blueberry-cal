@@ -183,14 +183,56 @@ RSpec.describe Month do
     end
   end
 
-  context ".week_format" do
-    it "makes the array for the month, March 2015" do
+  context "make_month method" do
+    it "makes an array for the month, March 2015" do
       month = Month.new(3,2015)
       expected = [[" 1", " 2", " 3", " 4", " 5", " 6", " 7", "\n"],
                   [" 8"," 9","10","11","12","13","14","\n"],
                   ["15","16","17","18","19","20","21","\n"],
                   ["22","23","24","25","26","27","28","\n"],
                   ["29","30","31","\n"],
+                  ["\n"]]
+      month.make_month.should == expected
+    end
+
+    it "makes an array for the month, February 1984" do
+      month = Month.new(2,1984)
+      expected = [["  ","  ","  "," 1"," 2"," 3"," 4","\n"],
+                  [" 5"," 6"," 7"," 8"," 9","10","11","\n"],
+                  ["12","13","14","15","16","17","18","\n"],
+                  ["19","20","21","22","23","24","25","\n"],
+                  ["26","27","28","29","\n"],
+                  ["\n"]]
+      month.make_month.should == expected
+    end
+
+    it "makes an array for the month, February 1920" do
+      month = Month.new(2,1920)
+      expected = [[" 1"," 2"," 3"," 4"," 5"," 6"," 7","\n"],
+                  [" 8"," 9","10","11","12","13","14","\n"],
+                  ["15","16","17","18","19","20","21","\n"],
+                  ["22","23","24","25","26","27","28","\n"],
+                  ["29","\n"],
+                  ["\n"]]
+      month.make_month.should == expected
+    end
+    it "makes an array for the month, November 2014" do
+      month = Month.new(11,2014)
+      expected = [["  ","  ","  ","  ","  ","  "," 1","\n"],
+                  [" 2"," 3"," 4"," 5"," 6"," 7"," 8","\n"],
+                  [" 9","10","11","12","13","14","15","\n"],
+                  ["16","17","18","19","20","21","22","\n"],
+                  ["23","24","25","26","27","28","29","\n"],
+                  ["30","\n"]]
+      month.make_month.should == expected
+    end
+    it "makes an array for the month, February 1903" do
+      month = Month.new(2,1903)
+      expected = [[" 1"," 2"," 3"," 4"," 5"," 6"," 7","\n"],
+                  [" 8"," 9","10","11","12","13","14","\n"],
+                  ["15","16","17","18","19","20","21","\n"],
+                  ["22","23","24","25","26","27","28","\n"],
+                  ["\n"],
                   ["\n"]]
       month.make_month.should == expected
     end

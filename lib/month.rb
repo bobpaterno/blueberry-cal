@@ -3,6 +3,7 @@ class Month
 
   MONTHS = [nil, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   DAYS_IN_WEEK = 7
+  WEEKS_TO_PRINT = 6
 
   def initialize(month, year)
     err_msg = "Invalid arguments.  Usage: cal [month] year"
@@ -45,9 +46,8 @@ class Month
 
   def make_week(start_date, start_index)
     week = []
-    start_index.times do
-      week.unshift("  ")
-    end
+    start_index.times { week << "  " }
+
     (DAYS_IN_WEEK - start_index).times do
       week << start_date.to_s.rjust(2) unless start_date > @num_month_days
       start_date += 1
@@ -58,11 +58,10 @@ class Month
   def make_month
     day_date = 1
     start_index = @first_week_day
-    puts "Start index is #{start_index}"
     month = []
-    6.times do
+    WEEKS_TO_PRINT.times do
       month << make_week(day_date, start_index)
-      day_date += 7
+      day_date += (DAYS_IN_WEEK - start_index)
       start_index = 0
     end
     month
@@ -108,5 +107,4 @@ class Month
     arr.each { |num| line << sprintf("%2d ", num) }
     line =line.rstrip << "\n"
   end
-
 end
