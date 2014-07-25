@@ -1,4 +1,5 @@
 require_relative '../lib/zellers_congruence'
+require_relative '../lib/year.rb'
 
 class Month
 
@@ -11,36 +12,31 @@ class Month
     raise ArgumentError, err_msg if month < 1 || month > 12
     raise ArgumentError, err_msg if year < 1800 || year > 3000
     @month = month
-    @year = year
+    @year = Year.new(year)
     @num_month_days = month_days
-    @first_week_day = ZellersCongruence.calculate(@month,1,@year)
+    @first_week_day = ZellersCongruence.calculate(@month,1,@year.year)
     @first_week_day = (@first_week_day + 6) % 7 # makes Sunday the zeroth index
   end
 
+
   def header
-    "#{name} #{@year}".center(20).rstrip
+    "#{name} #{@year.year}".center(20).rstrip
   end
+
 
   def name
     MONTHS[@month]
   end
 
 
-  def leap_year?
-    if @year % 4 == 0
-      return true unless @year % 100 == 0
-      return true if @year % 400 == 0
-    end
-    return false
-  end
-
   def month_days
     if @month == 2
-      return 28 unless leap_year?
+      return 28 unless @year.leapyear?
       return 29
     end
     return 30 + (@month + (@month/8.0).floor) % 2
   end
+
 
   def to_s
     output = header
@@ -56,5 +52,4 @@ class Month
     (WEEKS_TO_PRINT - week_count).times { output << "\n" }
     output
   end
-
 end

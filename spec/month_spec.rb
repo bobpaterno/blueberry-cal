@@ -64,21 +64,6 @@ RSpec.describe Month do
     end
   end
 
-  context "determine if leap year" do
-    it "returns true for 2004" do
-      Month.new(1,2004).leap_year?.should == true
-    end
-    it "returns true for 1816" do
-      Month.new(1,1816).leap_year?.should == true
-    end
-    it "returns true for 2000" do
-      Month.new(1,2000).leap_year?.should == true
-    end
-    it "returns false for 1900" do
-      Month.new(1,1900).leap_year?.should == false
-    end
-  end
-
   context "31 day long months" do
     it "returns 31 days for January" do
       Month.new(1,2015).month_days.should == 31
