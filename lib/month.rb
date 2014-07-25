@@ -1,5 +1,6 @@
+require_relative '../lib/zellers_congruence'
+
 class Month
-  require 'zellers_congruence'
 
   MONTHS = [nil, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   DAYS_IN_WEEK = 7
@@ -24,42 +25,6 @@ class Month
     MONTHS[@month]
   end
 
-  def make_week(start_date, start_index)
-    # Returns an array of strings representing a week
-    # start_date is the number of the first day in the week
-    # start_index is which day of the week to start, 0 is Sunday
-    week = []
-    start_index.times { week << "  " }
-
-    (DAYS_IN_WEEK - start_index).times do
-      week << start_date.to_s.rjust(2) unless start_date > @num_month_days
-      start_date += 1
-    end
-    week << "\n"
-  end
-
-  def make_month
-    day_date = 1
-    start_index = @first_week_day
-    month = []
-    WEEKS_TO_PRINT.times do
-      month << make_week(day_date, start_index)
-      day_date += (DAYS_IN_WEEK - start_index)
-      start_index = 0
-    end
-    month
-  end
-
-  def to_s
-    month = make_month
-    output = header
-    output << "\nSu Mo Tu We Th Fr Sa\n"
-    month.each do |week|
-      weekdays = week.first(week.length-1).join(" ")
-      output << weekdays << "\n"
-    end
-    output
-  end
 
   def leap_year?
     if @year % 4 == 0
@@ -75,6 +40,21 @@ class Month
       return 29
     end
     return 30 + (@month + (@month/8.0).floor) % 2
+  end
+
+  def to_s
+    output = header
+    output << "\nSu Mo Tu We Th Fr Sa\n"
+    days = Array(1..@num_month_days)
+    @first_week_day.times { days.unshift("  ") }
+    week_count = 0
+    days.each_slice(DAYS_IN_WEEK) do |week|
+      week_count += 1
+      week.collect! { |day| day.to_s.rjust(2) }
+      output << (week.join(" ") << "\n")
+    end
+    (WEEKS_TO_PRINT - week_count).times { output << "\n" }
+    output
   end
 
 end

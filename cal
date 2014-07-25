@@ -2,9 +2,11 @@
 
 
 require_relative 'lib/month'
+#require_relative 'lib/year'
 
 month = ARGV[0].to_i
 year = ARGV[1].to_i
+
 
 month = Month.new(month,year)
 puts month.to_s
