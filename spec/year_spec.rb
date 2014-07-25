@@ -23,7 +23,14 @@ RSpec.describe Year do
       year = Year.new(2400)
       year.leapyear?.should == true
     end
+  end
 
+  context "catches invalid year" do
+    it "prints error message about invalid range" do
+      expected = "cal: year 1000 not in range 1800...3000\n"
+      actual = `./cal 1000`
+      actual.should == expected
+    end
   end
 
 
