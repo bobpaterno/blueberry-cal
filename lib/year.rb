@@ -15,7 +15,6 @@ class Year
     @months = []
   end
 
-
   def leapyear?
     if @year % 4 == 0
       return true unless @year % 100 == 0
@@ -24,11 +23,9 @@ class Year
     return false
   end
 
-
   def header
     "#{@year}".center(LINE_WIDTH-1).rstrip << "\n\n"
   end
-
 
   def make_months
     NUM_MONTHS.times do |month|
@@ -36,11 +33,9 @@ class Year
     end
   end
 
-
   def months(n)
     @months[n-1]
   end
-
 
   def month_headers_string(start_month)
     month_header = ""
@@ -70,19 +65,9 @@ class Year
       output << weekday_headers_string
       header_index += NUM_COLUMNS
 
-      mo1 = row[0].to_s.split("\n")[2..5]
-      mo2 = row[1].to_s.split("\n")[2..5]
-      mo3 = row[2].to_s.split("\n")[2..5]
-
-      month_row = mo1.zip(mo2,mo3).flatten
-      month_row.each_slice(NUM_COLUMNS) do |line|
-        output << (line.join("  ") << "\n")
-      end
-
-      # last couple of lines are special cases
-      mo1 = row[0].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[6..7]
-      mo2 = row[1].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[6..7]
-      mo3 = row[2].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[6..7]
+      mo1 = row[0].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[2..7]
+      mo2 = row[1].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[2..7]
+      mo3 = row[2].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[2..7]
 
       month_row = mo1.zip(mo2,mo3).flatten
       month_row.each_slice(NUM_COLUMNS) do |line|
@@ -94,8 +79,6 @@ class Year
         output << (this_row.rstrip << "\n")
       end
     end
-
     output
   end
-
 end
