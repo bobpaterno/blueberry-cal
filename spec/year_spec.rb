@@ -79,14 +79,47 @@ EOS
     end
   end
 
-  context "Year#make_months_array" do
-    it "checks that the method splits months by newlines" do
-      year = Year.new(2001)
-      expected = []
+  context "#month_headers_string starting January" do
+    it "checks if the 3 month headers are output correctly" do
+      year = Year.new(2000)
       year.make_months
-      actual = year.make_months_array[0].inspect
+      expected = "      January               February               March\n"
+      actual = year.month_headers_string(1)
+      actual.should == expected
+    end
+    it "checks if the 3 month headers are output correctly" do
+      year = Year.new(1970)
+      year.make_months
+      expected = "       April                  May                   June\n"
+      actual = year.month_headers_string(4)
+      actual.should == expected
+    end
+    it "checks if the 3 month headers are output correctly" do
+      year = Year.new(2000)
+      year.make_months
+      expected = "        July                 August              September\n"
+      actual = year.month_headers_string(7)
+      actual.should == expected
+    end
+    it "checks if the 3 month headers are output correctly" do
+      year = Year.new(2001)
+      year.make_months
+      expected = "      October               November              December\n"
+      actual = year.month_headers_string(10)
       actual.should == expected
     end
   end
+
+  context "#weekday_headers_string" do
+    it "check if week day headers print out correctly" do
+      year = Year.new(1902)
+      year.make_months
+      expected = "Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa\n"
+      actual = year.weekday_headers_string
+      actual.should == expected
+    end
+  end
+
+
 
 end

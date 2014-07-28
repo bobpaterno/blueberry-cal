@@ -42,37 +42,59 @@ class Year
   end
 
 
-  def make_months_array
-    months = []
-    NUM_ROWS.times.with_index do |i|
-      m1 = Month.new((i*3)+1,@year).to_s.split("\n")
-      m2 = Month.new((i*3)+2,@year).to_s.split("\n")
-      m3 = Month.new((i*3)+3,@year).to_s.split("\n")
-      m1.collect! { |m| m.ljust(MONTH_WIDTH) }
-      m2.collect! { |m| m.ljust(MONTH_WIDTH) }
-      m3.collect! { |m| m.ljust(MONTH_WIDTH) }
-
-      months << m1[1..m1.size].zip(m2[1..m1.size],m3[1..m1.size])
+  def month_headers_string(start_month)
+    month_header = ""
+    start_month -= 1
+    NUM_COLUMNS.times do |i|
+      month_header << (@months[start_month+i].name.center(20) << "  ")
     end
-    months.flatten.flatten
+    month_header.rstrip << "\n"
   end
 
+  def weekday_headers_string
+    week_header=""
+    weekday_header = @months[0].to_s.split("\n")[1].rstrip
+    NUM_COLUMNS.times do |i|
+      week_header << weekday_header << "  "
+    end
+    week_header.rstrip << "\n"
+  end
 
   def to_s
-    # make_months
     output = ""
+    header_index = 1
+    make_months
     output << header
-    # months_array = @months.collect { |month| month.split("\n") }
+    @months.each_slice(NUM_COLUMNS) do |row|
+      output << month_headers_string(header_index)
+      output << weekday_headers_string
+      header_index += NUM_COLUMNS
 
-    # @months.each_slice(NUM_COLUMNS) do |row|
-    #   row.each { |month| output << (month.name.center(20) << "  ")}
-    #   output << (output.rstrip << "\n")
-    # end
-    months=make_months_array
-    months.each_slice(3) do |line|
-      output << line.join("  ")
-      output << "\n"
+      mo1 = row[0].to_s.split("\n")[2..5]
+      mo2 = row[1].to_s.split("\n")[2..5]
+      mo3 = row[2].to_s.split("\n")[2..5]
+
+      month_row = mo1.zip(mo2,mo3).flatten
+      month_row.each_slice(NUM_COLUMNS) do |line|
+        output << (line.join("  ") << "\n")
+      end
+
+      # last couple of lines are special cases
+      mo1 = row[0].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[6..7]
+      mo2 = row[1].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[6..7]
+      mo3 = row[2].to_s.lines("\n").collect! { |l| l.sub(/\n/,"") }[6..7]
+
+      month_row = mo1.zip(mo2,mo3).flatten
+      month_row.each_slice(NUM_COLUMNS) do |line|
+        this_row = ""
+        padding = "".ljust(MONTH_WIDTH+2)
+        this_row << (line[0].empty? ? padding : (line[0].ljust(MONTH_WIDTH) << "  ") )
+        this_row << (line[1].empty? ? padding : (line[1].ljust(MONTH_WIDTH) << "  ") )
+        this_row << line[2].ljust(MONTH_WIDTH)
+        output << (this_row.rstrip << "\n")
+      end
     end
+
     output
   end
 
